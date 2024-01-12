@@ -33,6 +33,23 @@ code {
   font-size: 30px;
   text-align: center;
   caret-color: transparent;
+  -webkit-user-select: none;
+  /* Disable text selection */
+  -webkit-user-select: none;
+  /* Chrome, Safari, Opera */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version */
+}
+
+.letter-box::selection {
+  color: initial;
+  /* Set the text color to the default */
+  background-color: transparent;
+  /* Set the background color to transparent */
 }
 
 .letter-box:disabled {
