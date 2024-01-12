@@ -28,12 +28,13 @@ code {
 }
 
 .letter-box {
-  width: 50px;
-  height: 50px;
-  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  font-size: 30px;
   text-align: center;
   caret-color: transparent;
 }
+
 .letter-box:disabled {
   color: black;
 }

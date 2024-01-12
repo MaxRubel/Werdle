@@ -407,7 +407,6 @@ const wordList = [
   'prose',
   'proud',
   'proxy',
-  'pubes',
   'pylon',
   'quack',
   'qualm',
@@ -639,7 +638,7 @@ const wordList = [
 ];
 
 const getNewWord = () => {
-  const index = Math.floor(Math.random() * 635);
+  const index = Math.floor(Math.random() * 634);
   return wordList[index];
 };
 
