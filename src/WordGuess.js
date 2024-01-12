@@ -16,7 +16,6 @@ export default function WordGuess(props) {
 
   useEffect(() => {
     document.getElementById(focusIndex).select();
-    console.log('focus index', focusIndex)
   }, [indexMult, focusIndex]);
 
   useEffect(() => {
@@ -28,7 +27,7 @@ export default function WordGuess(props) {
     document.getElementById(focusIndex).select()
   })
 
-  const keyTopRow = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'Backspace'];
+  const keyTopRow = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
   const keyMidRow = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'];
   const keyLastRow = ['Z', 'X', 'C', 'V', 'B', 'N', 'M'];
 
@@ -90,19 +89,23 @@ export default function WordGuess(props) {
     let timeoutId;
 
     // change colors during typing
-    if (keyTopRow.includes(e.key.toUpperCase()) || keyMidRow.includes(e.key.toUpperCase()) || keyLastRow.includes(e.key.toUpperCase()) || e.key === 'Enter') {
+    if (keyTopRow.includes(e.key.toUpperCase()) || keyMidRow.includes(e.key.toUpperCase()) || keyLastRow.includes(e.key.toUpperCase()) || e.key === 'Enter' || e.key === 'Backspace') {
       // Cancel the previous timeout if it exists
       if (timeoutId) {
         clearTimeout(timeoutId);
       }
-
+      const key = document.getElementById(e.key)
+      const oldProp = key.style.backgroundColor
+      console.log(oldProp)
       // Change the color of the input temporarily
-      document.getElementById(e.key).style.backgroundColor = 'lightgrey'
+      key.style.backgroundColor = 'lightgrey'
 
       // Set a new timeout
       timeoutId = setTimeout(() => {
         // Revert the color of the input back to its original color
-        document.getElementById(e.key).style = '';
+
+        key.style.backgroundColor = oldProp;
+
       }, 400);
     }
 
@@ -128,7 +131,7 @@ export default function WordGuess(props) {
   const keyClick = (e) => {
     //LETTER CLICKS
     if (
-      e.target.id !== 'backspace' &&
+      e.target.id !== 'Backspace' &&
       e.target.id !== 'Enter' &&
       focusIndex <= 4 + indexMult &&
       focusIndex < 29
@@ -138,7 +141,7 @@ export default function WordGuess(props) {
     }
     //BACKSPACE 
     if (
-      e.target.id === 'backspace' &&
+      e.target.id === 'Backspace' &&
       focusIndex >= 0 + indexMult
     ) {
       if (focusIndex < 4 + indexMult && focusIndex > 0 + indexMult && document.getElementById(focusIndex).value === '') {
@@ -446,6 +449,7 @@ export default function WordGuess(props) {
         <button id='Enter' type='button' className='btn btn-light' onClick={keyClick}>
           RETURN
         </button>
+        <button id="Backspace" type='button' className='btn btn-light' onClick={keyClick}>BACKSPACE</button>
       </div>
     </div>
   );
