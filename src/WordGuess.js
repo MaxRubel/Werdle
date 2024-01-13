@@ -102,7 +102,7 @@ export default function WordGuess(props) {
       timeoutId = setTimeout(() => {
         // Revert the color of the input back to its original color
         key.style.backgroundColor = oldProp;
-      }, 400);
+      }, 200);
     }
 
     if (e.key === 'Enter' || e.key === 'Backspace') {
@@ -114,7 +114,7 @@ export default function WordGuess(props) {
       timeoutId = setTimeout(() => {
         // Revert the color of the input back to its original color
         key.style.backgroundColor = '';
-      }, 400);
+      }, 200);
     }
 
     // LETTER TYPED -- increment focusIndex
