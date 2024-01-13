@@ -236,9 +236,6 @@ export default function WordGuess(props) {
                 type='text'
                 maxLength={1}
                 onKeyDown={handleInput}
-                onClick={() => {
-                  setFocusIndex(index);
-                }}
                 autoComplete="off"
               />
             ))}
@@ -262,9 +259,6 @@ export default function WordGuess(props) {
                 type='text'
                 maxLength={1}
                 onKeyDown={handleInput}
-                onClick={() => {
-                  setFocusIndex(index);
-                }}
                 autoComplete="off"
               />
             ))}
@@ -288,9 +282,6 @@ export default function WordGuess(props) {
                 type='text'
                 maxLength={1}
                 onKeyDown={handleInput}
-                onClick={() => {
-                  setFocusIndex(index);
-                }}
                 autoComplete="off"
               />
             ))}
@@ -314,9 +305,6 @@ export default function WordGuess(props) {
                 type='text'
                 maxLength={1}
                 onKeyDown={handleInput}
-                onClick={() => {
-                  setFocusIndex(index);
-                }}
                 autoComplete="off"
               />
             ))}
@@ -340,9 +328,6 @@ export default function WordGuess(props) {
                 type='text'
                 maxLength={1}
                 onKeyDown={handleInput}
-                onClick={() => {
-                  setFocusIndex(index);
-                }}
                 autoComplete="off"
               />
             ))}
@@ -367,9 +352,7 @@ export default function WordGuess(props) {
                 type='text'
                 maxLength={1}
                 onKeyDown={handleInput}
-                onClick={() => {
-                  setFocusIndex(index);
-                }}
+                autoComplete="off"
               />
             ))}
           </div>
@@ -381,7 +364,7 @@ export default function WordGuess(props) {
           type='button'
           onClick={handleClick}
           className='btn btn-success'
-          style={{ marginTop: '2%', marginBottom: '2%' }}
+          style={{ marginTop: '5%', marginBottom: '2%' }}
         >
           Click Here to Play Again
         </button>
