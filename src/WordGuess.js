@@ -89,23 +89,31 @@ export default function WordGuess(props) {
     let timeoutId;
 
     // change colors during typing
-    if (keyTopRow.includes(e.key.toUpperCase()) || keyMidRow.includes(e.key.toUpperCase()) || keyLastRow.includes(e.key.toUpperCase()) || e.key === 'Enter' || e.key === 'Backspace') {
+    if (keyTopRow.includes(e.key.toUpperCase()) || keyMidRow.includes(e.key.toUpperCase()) || keyLastRow.includes(e.key.toUpperCase())) {
       // Cancel the previous timeout if it exists
       if (timeoutId) {
         clearTimeout(timeoutId);
       }
       const key = document.getElementById(e.key)
       const oldProp = key.style.backgroundColor
-      console.log(oldProp)
       // Change the color of the input temporarily
       key.style.backgroundColor = 'lightgrey'
-
       // Set a new timeout
       timeoutId = setTimeout(() => {
         // Revert the color of the input back to its original color
-
         key.style.backgroundColor = oldProp;
+      }, 400);
+    }
 
+    if (e.key === 'Enter' || e.key === 'Backspace') {
+      console.log('yep')
+      const key = document.getElementById(e.key)
+      // Change the color of the input temporarily
+      key.style.backgroundColor = 'lightgrey'
+      // Set a new timeout
+      timeoutId = setTimeout(() => {
+        // Revert the color of the input back to its original color
+        key.style.backgroundColor = '';
       }, 400);
     }
 
@@ -228,9 +236,6 @@ export default function WordGuess(props) {
                 type='text'
                 maxLength={1}
                 onKeyDown={handleInput}
-                onClick={() => {
-                  setFocusIndex(index);
-                }}
                 autoComplete="off"
               />
             ))}
@@ -254,9 +259,6 @@ export default function WordGuess(props) {
                 type='text'
                 maxLength={1}
                 onKeyDown={handleInput}
-                onClick={() => {
-                  setFocusIndex(index);
-                }}
                 autoComplete="off"
               />
             ))}
@@ -280,9 +282,6 @@ export default function WordGuess(props) {
                 type='text'
                 maxLength={1}
                 onKeyDown={handleInput}
-                onClick={() => {
-                  setFocusIndex(index);
-                }}
                 autoComplete="off"
               />
             ))}
@@ -306,9 +305,6 @@ export default function WordGuess(props) {
                 type='text'
                 maxLength={1}
                 onKeyDown={handleInput}
-                onClick={() => {
-                  setFocusIndex(index);
-                }}
                 autoComplete="off"
               />
             ))}
@@ -332,9 +328,6 @@ export default function WordGuess(props) {
                 type='text'
                 maxLength={1}
                 onKeyDown={handleInput}
-                onClick={() => {
-                  setFocusIndex(index);
-                }}
                 autoComplete="off"
               />
             ))}
@@ -359,9 +352,7 @@ export default function WordGuess(props) {
                 type='text'
                 maxLength={1}
                 onKeyDown={handleInput}
-                onClick={() => {
-                  setFocusIndex(index);
-                }}
+                autoComplete="off"
               />
             ))}
           </div>
@@ -373,37 +364,19 @@ export default function WordGuess(props) {
           type='button'
           onClick={handleClick}
           className='btn btn-success'
-          style={{ marginTop: '2%', marginBottom: '2%' }}
+          style={{ marginTop: '5%', marginBottom: '2%' }}
         >
           Click Here to Play Again
         </button>
       )}
-
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '2%',
-          marginTop: '3%',
-          width: '500px',
-          cursor: "none"
-        }}
-      >
+      <div style={{ marginTop: '5%' }}>
         {keyTopRow.map((item, index) => (
           <button key={index} id={item.toLowerCase()} onClick={keyClick} type='button' className='btn btn-light'>
             {item}
           </button>
         ))}
       </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '2%',
-          marginTop: '3%',
-          width: '500px',
-        }}
-      >
+      <div className='keyboard-row'>
         {keyMidRow.map((item, index) => (
           <button
             key={index + 11}
@@ -416,15 +389,7 @@ export default function WordGuess(props) {
           </button>
         ))}
       </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '2%',
-          marginTop: '3%',
-          width: '500px',
-        }}
-      >
+      <div className='keyboard-row'>
         {keyLastRow.map((item, index) => (
           <button
             key={index + 10}
@@ -437,15 +402,7 @@ export default function WordGuess(props) {
           </button>
         ))}
       </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center', // Align items to the start of the container
-          gap: '2%', // Add some space between items
-          marginTop: '3%',
-          width: '500px', // Set the width to 100% to fill its pa
-        }}
-      >
+      <div className='keyboard-row'>
         <button id='Enter' type='button' className='btn btn-light' onClick={keyClick}>
           RETURN
         </button>
