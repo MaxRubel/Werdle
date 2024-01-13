@@ -15,7 +15,6 @@ code {
 
 .game-container {
   height: 100vh;
-  /* max-width: 100%vh; */
   box-sizing: border-box;
 }
 
