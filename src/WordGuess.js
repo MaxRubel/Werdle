@@ -7,13 +7,12 @@ export default function WordGuess(props) {
   const [word, setWord] = useState('');
   const [indexMult, setIndexMult] = useState(0);
   const [playAgain, setPlayAgain] = useState(0);
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState('');
   const guessNo = useRef(0);
   const gameStatus = useRef('playing');
-  const focusRef = useRef(0)
 
   const { updateKey } = props;
-
+  console.log(gameStatus);
   useEffect(() => {
     document.getElementById(focusIndex).select();
   }, [indexMult, focusIndex]);
@@ -24,12 +23,18 @@ export default function WordGuess(props) {
   }, []);
 
   window.addEventListener('click', () => {
-    document.getElementById(focusIndex).select()
-  })
+    document.getElementById(focusIndex).select();
+  });
 
   const keyTopRow = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
   const keyMidRow = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'];
   const keyLastRow = ['Z', 'X', 'C', 'V', 'B', 'N', 'M'];
+
+  if (gameStatus.current === 'won' || gameStatus.current === 'lost') {
+    setTimeout(() => {
+      setPlayAgain(1);
+    }, 2500);
+  }
 
   if (guessNo.current === 6 && gameStatus.current === 'playing') {
     gameStatus.current = 'lost';
@@ -37,20 +42,16 @@ export default function WordGuess(props) {
       setMessage(`Good try! The word was "${word}"`);
     }, 2000);
   }
-  if (gameStatus.current === 'won' || gameStatus.current === 'lost') {
-    setTimeout(() => {
-      setPlayAgain(1);
-    }, 2500);
-  }
 
   function compareWords(guess, word) {
-    const { displayArray, exactPlacement } = arrayBusiness(guess, word)
+    const { displayArray, exactPlacement } = arrayBusiness(guess, word);
     //RESULTS OF ARRAY----------^
     displayArray.forEach((letter) => {
       setTimeout(() => {
-        document.getElementById(letter.letter).style.backgroundColor = letter.style
-      }, 2000)
-    })
+        document.getElementById(letter.letter).style.backgroundColor =
+          letter.style;
+      }, 2000);
+    });
     //MAKE THE COLORS-----------v
     const sortArray = displayArray.sort((a, b) => a.index - b.index);
     sortArray.forEach((item, index) => {
@@ -62,7 +63,7 @@ export default function WordGuess(props) {
           'none';
       }, index * 400);
     });
-    //CHECK FOR WINNER 
+    //CHECK FOR WINNER
     // BY LOOPING THROUGH EXACT PLACEMENT ARRAY AND RETURNING 5 TRUES
     let winCounter = 0;
     exactPlacement.forEach((item) => {
@@ -72,9 +73,9 @@ export default function WordGuess(props) {
       if (winCounter === 5) {
         for (let i = indexMult; i <= 29; i++)
           document.getElementById(i).disabled = true;
+        gameStatus.current = 'won';
         setTimeout(() => {
           setMessage(`Nice job! You got the word!`);
-          gameStatus.current = 'won';
         }, 2000);
       }
     });
@@ -89,15 +90,19 @@ export default function WordGuess(props) {
     let timeoutId;
 
     // change colors during typing
-    if (keyTopRow.includes(e.key.toUpperCase()) || keyMidRow.includes(e.key.toUpperCase()) || keyLastRow.includes(e.key.toUpperCase())) {
+    if (
+      keyTopRow.includes(e.key.toUpperCase()) ||
+      keyMidRow.includes(e.key.toUpperCase()) ||
+      keyLastRow.includes(e.key.toUpperCase())
+    ) {
       // Cancel the previous timeout if it exists
       if (timeoutId) {
         clearTimeout(timeoutId);
       }
-      const key = document.getElementById(e.key)
-      const oldProp = key.style.backgroundColor
+      const key = document.getElementById(e.key);
+      const oldProp = key.style.backgroundColor;
       // Change the color of the input temporarily
-      key.style.backgroundColor = 'lightgrey'
+      key.style.backgroundColor = 'lightgrey';
       // Set a new timeout
       timeoutId = setTimeout(() => {
         // Revert the color of the input back to its original color
@@ -106,15 +111,14 @@ export default function WordGuess(props) {
     }
 
     if (e.key === 'Enter' || e.key === 'Backspace') {
-      console.log('yep')
-      const key = document.getElementById(e.key)
+      const key = document.getElementById(e.key);
       // Change the color of the input temporarily
-      key.style.backgroundColor = 'lightgrey'
+      key.style.backgroundColor = 'lightgrey';
       // Set a new timeout
       timeoutId = setTimeout(() => {
         // Revert the color of the input back to its original color
         key.style.backgroundColor = '';
-      }, 200);
+      }, 100);
     }
 
     // LETTER TYPED -- increment focusIndex
@@ -144,36 +148,43 @@ export default function WordGuess(props) {
       focusIndex <= 4 + indexMult &&
       focusIndex < 29
     ) {
-      document.getElementById(focusIndex).value = e.target.id
-      if (focusIndex !== 4 + indexMult) setFocusIndex((prevState) => prevState + 1);
+      document.getElementById(focusIndex).value = e.target.id;
+      if (focusIndex !== 4 + indexMult)
+        setFocusIndex((prevState) => prevState + 1);
     }
-    //BACKSPACE 
-    if (
-      e.target.id === 'Backspace' &&
-      focusIndex >= 0 + indexMult
-    ) {
-      if (focusIndex < 4 + indexMult && focusIndex > 0 + indexMult && document.getElementById(focusIndex).value === '') {
-        document.getElementById(focusIndex - 1).value = ''
+    //BACKSPACE
+    if (e.target.id === 'Backspace' && focusIndex >= 0 + indexMult) {
+      if (
+        focusIndex < 4 + indexMult &&
+        focusIndex > 0 + indexMult &&
+        document.getElementById(focusIndex).value === ''
+      ) {
+        document.getElementById(focusIndex - 1).value = '';
         setFocusIndex((prevState) => prevState - 1);
       }
-      if (focusIndex < 4 + indexMult && focusIndex > 0 + indexMult && document.getElementById(focusIndex).value) {
-        document.getElementById(focusIndex).value = ''
-        if (focusIndex !== 0 + indexMult) { setFocusIndex((prevState) => prevState - 1); }
+      if (
+        focusIndex < 4 + indexMult &&
+        focusIndex > 0 + indexMult &&
+        document.getElementById(focusIndex).value
+      ) {
+        document.getElementById(focusIndex).value = '';
+        if (focusIndex !== 0 + indexMult) {
+          setFocusIndex((prevState) => prevState - 1);
+        }
       }
       if (focusIndex === 0 + indexMult && document.getElementById(focusIndex)) {
-        document.getElementById(focusIndex).value = ''
+        document.getElementById(focusIndex).value = '';
       }
       if (focusIndex === 4 + indexMult) {
         document.getElementById(focusIndex).value = '';
-        setFocusIndex((prevState) => prevState - 1)
+        setFocusIndex((prevState) => prevState - 1);
       }
-
     }
     //ENTER
     if (e.target.id === 'Enter') {
-      doSubmit()
+      doSubmit();
     }
-  }
+  };
   const doSubmit = () => {
     if (gameStatus.current === 'playing') {
       let cond = true;
@@ -197,10 +208,10 @@ export default function WordGuess(props) {
     } else {
       return;
     }
-  }
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    doSubmit()
+    doSubmit();
   };
 
   // restart the game---v
@@ -221,7 +232,7 @@ export default function WordGuess(props) {
         <h4> {message}</h4>
       </div>
       <form
-        key="form1"
+        key='form1'
         onSubmit={(e) => {
           handleSubmit(e);
         }}
@@ -236,7 +247,7 @@ export default function WordGuess(props) {
                 type='text'
                 maxLength={1}
                 onKeyDown={handleInput}
-                autoComplete="off"
+                autoComplete='off'
               />
             ))}
           </div>
@@ -244,7 +255,7 @@ export default function WordGuess(props) {
         <button type='submit' style={{ display: 'none' }}></button>
       </form>
       <form
-        key="form2"
+        key='form2'
         onSubmit={(e) => {
           handleSubmit(e);
         }}
@@ -259,7 +270,7 @@ export default function WordGuess(props) {
                 type='text'
                 maxLength={1}
                 onKeyDown={handleInput}
-                autoComplete="off"
+                autoComplete='off'
               />
             ))}
           </div>
@@ -267,7 +278,7 @@ export default function WordGuess(props) {
         <button type='submit' style={{ display: 'none' }}></button>
       </form>
       <form
-        key="form3"
+        key='form3'
         onSubmit={(e) => {
           handleSubmit(e);
         }}
@@ -282,7 +293,7 @@ export default function WordGuess(props) {
                 type='text'
                 maxLength={1}
                 onKeyDown={handleInput}
-                autoComplete="off"
+                autoComplete='off'
               />
             ))}
           </div>
@@ -290,7 +301,7 @@ export default function WordGuess(props) {
         <button type='submit' style={{ display: 'none' }}></button>
       </form>
       <form
-        key="form4"
+        key='form4'
         onSubmit={(e) => {
           handleSubmit(e);
         }}
@@ -305,7 +316,7 @@ export default function WordGuess(props) {
                 type='text'
                 maxLength={1}
                 onKeyDown={handleInput}
-                autoComplete="off"
+                autoComplete='off'
               />
             ))}
           </div>
@@ -313,7 +324,7 @@ export default function WordGuess(props) {
         <button type='submit' style={{ display: 'none' }}></button>
       </form>
       <form
-        key="form5"
+        key='form5'
         onSubmit={(e) => {
           handleSubmit(e);
         }}
@@ -328,7 +339,7 @@ export default function WordGuess(props) {
                 type='text'
                 maxLength={1}
                 onKeyDown={handleInput}
-                autoComplete="off"
+                autoComplete='off'
               />
             ))}
           </div>
@@ -336,7 +347,7 @@ export default function WordGuess(props) {
         <button type='submit' style={{ display: 'none' }}></button>
       </form>
       <form
-        key="form6"
+        key='form6'
         id='lastRow'
         onSubmit={(e) => {
           handleSubmit(e);
@@ -352,7 +363,7 @@ export default function WordGuess(props) {
                 type='text'
                 maxLength={1}
                 onKeyDown={handleInput}
-                autoComplete="off"
+                autoComplete='off'
               />
             ))}
           </div>
@@ -371,7 +382,13 @@ export default function WordGuess(props) {
       )}
       <div style={{ marginTop: '5%' }}>
         {keyTopRow.map((item, index) => (
-          <button key={index} id={item.toLowerCase()} onClick={keyClick} type='button' className='btn btn-light'>
+          <button
+            key={index}
+            id={item.toLowerCase()}
+            onClick={keyClick}
+            type='button'
+            className='btn btn-light'
+          >
             {item}
           </button>
         ))}
@@ -403,10 +420,22 @@ export default function WordGuess(props) {
         ))}
       </div>
       <div className='keyboard-row'>
-        <button id='Enter' type='button' className='btn btn-light' onClick={keyClick}>
+        <button
+          id='Enter'
+          type='button'
+          className='btn btn-light'
+          onClick={keyClick}
+        >
           RETURN
         </button>
-        <button id="Backspace" type='button' className='btn btn-light' onClick={keyClick}>BACKSPACE</button>
+        <button
+          id='Backspace'
+          type='button'
+          className='btn btn-light'
+          onClick={keyClick}
+        >
+          BACKSPACE
+        </button>
       </div>
     </div>
   );
